@@ -144,7 +144,6 @@ composed3iii :: (Double# -> (# Int#, Int#, Int# #)) -> Double# -> (Int# -> Int# 
 composef3iib :: (Float# -> (# Int#, Int#, ByteArray# #)) -> Float# -> (Int# -> Int# -> ByteArray# -> r) -> r
 composei3iii :: (Int# -> (# Int#, Int#, Int# #)) -> Int# -> (Int# -> Int# -> Int# -> r) -> r
 composes3s__ :: (State# s -> (# State# t, a, b #)) -> State# s -> (State# t -> a -> b -> r) -> r
-composes3s_2__ :: (State# s -> (# State# t, a, (# b, c #) #)) -> State# s -> (State# t -> a -> b -> c -> r) -> r
 composes3sii :: (State# s -> (# State# t, Int#, Int# #)) -> State# s -> (State# t -> Int# -> Int# -> r) -> r
 composes3si_ :: (State# s -> (# State# t, Int#, a #)) -> State# s -> (State# t -> Int# -> a -> r) -> r
 composes3spw :: (State# s -> (# State# t, Addr#, Word# #)) -> State# s -> (State# t -> Addr# -> Word# -> r) -> r
@@ -203,7 +202,6 @@ composed3iii f x k = case f x of (# a, b, c #) -> k a b c
 composef3iib f x k = case f x of (# a, b, c #) -> k a b c
 composei3iii f x k = case f x of (# a, b, c #) -> k a b c
 composes3s__ f x k = case f x of (# a, b, c #) -> k a b c
-composes3s_2__ f x k = case f x of (# a, b, (# c, d #) #) -> k a b c d
 composes3sii f x k = case f x of (# a, b, c #) -> k a b c
 composes3si_ f x k = case f x of (# a, b, c #) -> k a b c
 composes3spw f x k = case f x of (# a, b, c #) -> k a b c
@@ -232,6 +230,10 @@ composes2sSa :: (State# s -> (# State# t, SmallArray# e #)) -> State# s -> (Stat
 composes2sSMa :: (State# s -> (# State# t, SmallMutableArray# u e #)) -> State# s -> (State# t -> SmallMutableArray# u e -> r) -> r
 composes2sSa f x k = case f x of (# a, b #) -> k a b
 composes2sSMa f x k = case f x of (# a, b #) -> k a b
+#endif
+#if __GLASGOW_HASKELL__ >= 706
+composes3s_2__ :: (State# s -> (# State# t, a, (# b, c #) #)) -> State# s -> (State# t -> a -> b -> c -> r) -> r
+composes3s_2__ f x k = case f x of (# a, b, (# c, d #) #) -> k a b c d
 #endif
 #if __GLASGOW_HASKELL__ >= 704
 composes2sAa :: (State# s -> (# State# t, ArrayArray# #)) -> State# s -> (State# t -> ArrayArray# -> r) -> r
