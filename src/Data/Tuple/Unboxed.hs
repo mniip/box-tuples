@@ -103,10 +103,6 @@ composeb2ib :: (ByteArray# -> (# Int#, ByteArray# #)) -> ByteArray# -> (Int# -> 
 composed2ii :: (Double# -> (# INT64, Int# #)) -> Double# -> (Int# -> Int# -> r) -> r
 composed2llii :: (Double# -> (# INT64, Int# #)) -> Double# -> (INT64 -> Int# -> r) -> r
 composef2ii :: (Float# -> (# Int#, Int# #)) -> Float# -> (Int# -> Int# -> r) -> r
-composehhi2hhihhi :: (Int8# -> (# Int8#, Int8# #)) -> Int8# -> (Int8# -> Int8# -> r) -> r
-composehhw2hhwhhw :: (Word8# -> (# Word8#, Word8# #)) -> Word8# -> (Word8# -> Word8# -> r) -> r
-composehi2hihi :: (Int16# -> (# Int16#, Int16# #)) -> Int16# -> (Int16# -> Int16# -> r) -> r
-composehw2hwhw :: (Word16# -> (# Word16#, Word16# #)) -> Word16# -> (Word16# -> Word16# -> r) -> r
 composei2i_ :: (Int# -> (# Int#, a #)) -> Int# -> (Int# -> a -> r) -> r
 composei2ib :: (Int# -> (# Int#, ByteArray# #)) -> Int# -> (Int# -> ByteArray# -> r) -> r
 composei2ii :: (Int# -> (# Int#, Int# #)) -> Int# -> (Int# -> Int# -> r) -> r
@@ -119,7 +115,6 @@ composes2s_ :: (State# s -> (# State# t, a #)) -> State# s -> (State# t -> a -> 
 composes2sa :: (State# s -> (# State# t, Array# e #)) -> State# s -> (State# t -> Array# e -> r) -> r
 composes2sb :: (State# s -> (# State# t, ByteArray# #)) -> State# s -> (State# t -> ByteArray# -> r) -> r
 composes2sc :: (State# s -> (# State# t, Char# #)) -> State# s -> (State# t -> Char# -> r) -> r
-composes2sC :: (State# s -> (# State# t, Compact# #)) -> State# s -> (State# t -> Compact# -> r) -> r
 composes2sd :: (State# s -> (# State# t, Double# #)) -> State# s -> (State# t -> Double# -> r) -> r
 composes2sf :: (State# s -> (# State# t, Float# #)) -> State# s -> (State# t -> Float# -> r) -> r
 composes2si :: (State# s -> (# State# t, Int# #)) -> State# s -> (State# t -> Int# -> r) -> r
@@ -150,7 +145,6 @@ composef3iib :: (Float# -> (# Int#, Int#, ByteArray# #)) -> Float# -> (Int# -> I
 composei3iii :: (Int# -> (# Int#, Int#, Int# #)) -> Int# -> (Int# -> Int# -> Int# -> r) -> r
 composes3s__ :: (State# s -> (# State# t, a, b #)) -> State# s -> (State# t -> a -> b -> r) -> r
 composes3s_2__ :: (State# s -> (# State# t, a, (# b, c #) #)) -> State# s -> (State# t -> a -> b -> c -> r) -> r
-composes3sCp :: (State# s -> (# State# t, Compact#, Addr# #)) -> State# s -> (State# t -> Compact# -> Addr# -> r) -> r
 composes3sii :: (State# s -> (# State# t, Int#, Int# #)) -> State# s -> (State# t -> Int# -> Int# -> r) -> r
 composes3si_ :: (State# s -> (# State# t, Int#, a #)) -> State# s -> (State# t -> Int# -> a -> r) -> r
 composes3spw :: (State# s -> (# State# t, Addr#, Word# #)) -> State# s -> (State# t -> Addr# -> Word# -> r) -> r
@@ -168,10 +162,6 @@ composeb2ib f x k = case f x of (# a, b #) -> k a b
 composed2ii f x k = case f x of (# a, b #) -> k a b
 composed2llii f x k = case f x of (# a, b #) -> k a b
 composef2ii f x k = case f x of (# a, b #) -> k a b
-composehhi2hhihhi f x k = case f x of (# a, b #) -> k a b
-composehhw2hhwhhw f x k = case f x of (# a, b #) -> k a b
-composehi2hihi f x k = case f x of (# a, b #) -> k a b
-composehw2hwhw f x k = case f x of (# a, b #) -> k a b
 composei2i_ f x k = case f x of (# a, b #) -> k a b
 composei2ib f x k = case f x of (# a, b #) -> k a b
 composei2ii f x k = case f x of (# a, b #) -> k a b
@@ -183,7 +173,6 @@ composep2ib f x k = case f x of (# a, b #) -> k a b
 composes2s_ f x k = case f x of (# a, b #) -> k a b
 composes2sa f x k = case f x of (# a, b #) -> k a b
 composes2sb f x k = case f x of (# a, b #) -> k a b
-composes2sC f x k = case f x of (# a, b #) -> k a b
 composes2sc f x k = case f x of (# a, b #) -> k a b
 composes2sd f x k = case f x of (# a, b #) -> k a b
 composes2sf f x k = case f x of (# a, b #) -> k a b
@@ -215,7 +204,6 @@ composef3iib f x k = case f x of (# a, b, c #) -> k a b c
 composei3iii f x k = case f x of (# a, b, c #) -> k a b c
 composes3s__ f x k = case f x of (# a, b, c #) -> k a b c
 composes3s_2__ f x k = case f x of (# a, b, (# c, d #) #) -> k a b c d
-composes3sCp f x k = case f x of (# a, b, c #) -> k a b c
 composes3sii f x k = case f x of (# a, b, c #) -> k a b c
 composes3si_ f x k = case f x of (# a, b, c #) -> k a b c
 composes3spw f x k = case f x of (# a, b, c #) -> k a b c
@@ -223,6 +211,22 @@ composeb4ibib f x k = case f x of (# a, b, c, d #) -> k a b c d
 composed4iwwi f x k = case f x of (# a, b, c, d #) -> k a b c d
 composes4siii f x k = case f x of (# a, b, c, d #) -> k a b c d
 
+#if __GLASGOW_HASKELL__ >= 808
+composehhi2hhihhi :: (Int8# -> (# Int8#, Int8# #)) -> Int8# -> (Int8# -> Int8# -> r) -> r
+composehhw2hhwhhw :: (Word8# -> (# Word8#, Word8# #)) -> Word8# -> (Word8# -> Word8# -> r) -> r
+composehi2hihi :: (Int16# -> (# Int16#, Int16# #)) -> Int16# -> (Int16# -> Int16# -> r) -> r
+composehw2hwhw :: (Word16# -> (# Word16#, Word16# #)) -> Word16# -> (Word16# -> Word16# -> r) -> r
+composehhi2hhihhi f x k = case f x of (# a, b #) -> k a b
+composehhw2hhwhhw f x k = case f x of (# a, b #) -> k a b
+composehi2hihi f x k = case f x of (# a, b #) -> k a b
+composehw2hwhw f x k = case f x of (# a, b #) -> k a b
+#endif
+#if __GLASGOW_HASKELL >= 802
+composes2sC :: (State# s -> (# State# t, Compact# #)) -> State# s -> (State# t -> Compact# -> r) -> r
+composes3sCp :: (State# s -> (# State# t, Compact#, Addr# #)) -> State# s -> (State# t -> Compact# -> Addr# -> r) -> r
+composes2sC f x k = case f x of (# a, b #) -> k a b
+composes3sCp f x k = case f x of (# a, b, c #) -> k a b c
+#endif
 #if __GLASGOW_HASKELL__ >= 710
 composes2sSa :: (State# s -> (# State# t, SmallArray# e #)) -> State# s -> (State# t -> SmallArray# e -> r) -> r
 composes2sSMa :: (State# s -> (# State# t, SmallMutableArray# u e #)) -> State# s -> (State# t -> SmallMutableArray# u e -> r) -> r
