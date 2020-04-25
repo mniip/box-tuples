@@ -1,6 +1,6 @@
 {-# LANGUAGE UnboxedTuples, MagicHash, CPP #-}
 #if __GLASGOW_HASKELL__ >= 800
-{-# LANGUAGE TypeInType, RankNTypes, MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE TypeInType, StarIsType, RankNTypes, MultiParamTypeClasses, FlexibleInstances #-}
 {-# OPTIONS_GHC -fobject-code #-}
 
 -------------------------------------------------------------------------------
@@ -27,6 +27,7 @@ module Data.Tuple.Unboxed.Rep
   , RepCompose4(..)
   ) where
 
+import Data.Kind
 import GHC.Prim
 import GHC.Exts
 
