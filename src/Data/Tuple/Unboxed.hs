@@ -95,7 +95,6 @@ import GHC.Prim
 
 compose_1_ :: (a -> (# b #)) -> a -> (b -> r) -> r
 composei1_ :: (Int# -> (# a #)) -> Int# -> (a -> r) -> r
-composeo1_ :: (BCO# -> (# a #)) -> BCO# -> (a -> r) -> r
 composep1_ :: (Addr# -> (# a #)) -> Addr# -> (a -> r) -> r
 composew1_ :: (Word# -> (# a #)) -> Word# -> (a -> r) -> r
 compose_2ab :: (a -> (# Array# e, ByteArray# #)) -> a -> (Array# e -> ByteArray# -> r) -> r
@@ -125,7 +124,6 @@ composes2slw :: (State# s -> (# State# t, WORD32 #)) -> State# s -> (State# t ->
 composes2sMa :: (State# s -> (# State# t, MutableArray# u e #)) -> State# s -> (State# t -> MutableArray# u e -> r) -> r
 composes2sMb :: (State# s -> (# State# t, MutableByteArray# u #)) -> State# s -> (State# t -> MutableByteArray# u -> r) -> r
 composes2sMv :: (State# s -> (# State# t, MVar# u e #)) -> State# s -> (State# t -> MVar# u e -> r) -> r
-composes2so :: (State# s -> (# State# t, BCO# #)) -> State# s -> (State# t -> BCO# -> r) -> r
 composes2sp :: (State# s -> (# State# t, Addr# #)) -> State# s -> (State# t -> Addr# -> r) -> r
 composes2sSn :: (State# s -> (# State# t, StableName# a #)) -> State# s -> (State# t -> StableName# a -> r) -> r
 composes2sSp :: (State# s -> (# State# t, StablePtr# a #)) -> State# s -> (State# t -> StablePtr# a -> r) -> r
@@ -153,7 +151,6 @@ composes4siii :: (State# s -> (# State# t, Int#, Int#, Int# #)) -> State# s -> (
 
 compose_1_ f x k = case f x of (# a #) -> k a
 composei1_ f x k = case f x of (# a #) -> k a
-composeo1_ f x k = case f x of (# a #) -> k a
 composep1_ f x k = case f x of (# a #) -> k a
 composew1_ f x k = case f x of (# a #) -> k a
 compose_2ab f x k = case f x of (# a, b #) -> k a b
@@ -183,7 +180,6 @@ composes2slw f x k = case f x of (# a, b #) -> k a b
 composes2sMa f x k = case f x of (# a, b #) -> k a b
 composes2sMb f x k = case f x of (# a, b #) -> k a b
 composes2sMv f x k = case f x of (# a, b #) -> k a b
-composes2so f x k = case f x of (# a, b #) -> k a b
 composes2sp f x k = case f x of (# a, b #) -> k a b
 composes2sSn f x k = case f x of (# a, b #) -> k a b
 composes2sSp f x k = case f x of (# a, b #) -> k a b
@@ -240,6 +236,12 @@ composes2sAa :: (State# s -> (# State# t, ArrayArray# #)) -> State# s -> (State#
 composes2sMAa :: (State# s -> (# State# t, MutableArrayArray# u #)) -> State# s -> (State# t -> MutableArrayArray# u -> r) -> r
 composes2sAa f x k = case f x of (# a, b #) -> k a b
 composes2sMAa f x k = case f x of (# a, b #) -> k a b
+#endif
+#if __GLASGOW_HASKELL__ < 900
+composeo1_ :: (BCO# -> (# a #)) -> BCO# -> (a -> r) -> r
+composes2so :: (State# s -> (# State# t, BCO# #)) -> State# s -> (State# t -> BCO# -> r) -> r
+composeo1_ f x k = case f x of (# a #) -> k a
+composes2so f x k = case f x of (# a, b #) -> k a b
 #endif
 
 -- | This is an \"inverse\" of 'composes2s_' because sometimes it might be
